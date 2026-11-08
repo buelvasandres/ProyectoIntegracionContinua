@@ -3,7 +3,7 @@
 
 Este proyecto levanta dos contenedores que se comunican entre sí:
 
-- **api**: aplicación web en Python (Flask) que responde en el puerto 5000.
+- **api**: aplicación web en PHP 8.2 (servidor integrado de PHP) que responde en el puerto 5000.
 - **db**: base de datos PostgreSQL donde la API guarda y consulta información.
 
 Ambos se ejecutan con Docker Compose dentro de una red interna. Solo la API es accesible desde el equipo; la base de datos queda protegida dentro de la red.
@@ -43,8 +43,8 @@ Para detener los contenedores: `docker compose down`
 | Método | Ruta      | Descripción                          |
 | ------ | --------- | ------------------------------------ |
 | GET    | `/health` | Verifica que la API está activa      |
-| GET    | `/items`  | Lista los registros de la base       |
-| POST   | `/items`  | Crea un registro nuevo               |
+| GET    | `/usuarios` | Lista los usuarios de la base      |
+| POST   | `/usuarios` | Crea un usuario nuevo (JSON: nombre, apellido, edad, sexo) |
 
 ## Estructura del proyecto
 
