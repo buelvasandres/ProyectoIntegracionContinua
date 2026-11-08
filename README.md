@@ -40,11 +40,17 @@ Para detener los contenedores: `docker compose down`
 
 ## Endpoints
 
-| Método | Ruta      | Descripción                          |
-| ------ | --------- | ------------------------------------ |
-| GET    | `/health` | Verifica que la API está activa      |
-| GET    | `/usuarios` | Lista los usuarios de la base      |
-| POST   | `/usuarios` | Crea un usuario nuevo (JSON: nombre, apellido, edad, sexo) |
+| Método | Ruta       | Descripción                                                  |
+| ------ | ---------- | ------------------------------------------------------------ |
+| GET    | `/health`  | Verifica que la API está activa, sin consultar la base de datos. |
+| GET    | `/usuarios` | Lista los usuarios y devuelve los datos en `data`.          |
+| POST   | `/usuarios` | Crea un usuario. Recibe `nombre`, `apellido`, `edad` y `sexo` en JSON y devuelve el registro creado en `data`. |
+
+Las respuestas tienen un campo `status` (`ok` o `error`). La creación valida
+que todos los campos sean obligatorios, que `edad` sea un entero no negativo,
+y que `nombre` y `apellido` tengan hasta 100 caracteres y `sexo` hasta 10.
+Los errores de validación devuelven HTTP 400; los errores de conexión con la
+base de datos devuelven HTTP 503.
 
 ## Estructura del proyecto
 

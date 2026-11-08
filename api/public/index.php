@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Punto de entrada HTTP de la API.
+ *
+ * Expone GET /health para comprobar el servicio y GET/POST /usuarios para
+ * consultar y crear registros. Las respuestas usan JSON con la forma
+ * {"status": "ok|error", ...}; los errores de conexión devuelven HTTP 503.
+ */
 require_once __DIR__ . '/../src/Database.php';
 
 header('Content-Type: application/json; charset=utf-8');
@@ -7,7 +14,12 @@ header('Content-Type: application/json; charset=utf-8');
 $method = $_SERVER['REQUEST_METHOD'];
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Función auxiliar para responder en JSON y terminar.
+/**
+ * Envía una respuesta JSON con el código HTTP indicado y termina la petición.
+ *
+ * @param int   $codigo Código de estado HTTP.
+ * @param array $datos Datos que se serializan como JSON.
+ */
 function responder(int $codigo, array $datos): void
 {
     http_response_code($codigo);
@@ -15,7 +27,7 @@ function responder(int $codigo, array $datos): void
     exit;
 }
 
-// GET /health -> verifica que la API está viva (no usa la base de datos).
+// GET /health -> verifica que la API está viva sin conectarse a la base de datos.
 if ($method === 'GET' && $path === '/health') {
     responder(200, [
         'status' => 'ok',
@@ -23,8 +35,7 @@ if ($method === 'GET' && $path === '/health') {
     ]);
 }
 
-// /usuarios -> estas rutas sí usan la base de datos (contenedor "db"),
-// sobre la tabla "usuarios" que crea el script db/init/01-esquema.sql.
+// /usuarios -> estas rutas usan el contenedor "db" y la tabla "usuarios".
 if ($path === '/usuarios') {
     try {
         $db = Database::connect();
@@ -37,12 +48,16 @@ if ($path === '/usuarios') {
 
     // GET /usuarios -> lista los usuarios.
     if ($method === 'GET') {
-        $usuarios = $db->query('SELECT id, nombre, apellido, edad, sexo FROM usuarios ORDER BY id')->fetchAll();
+        $usuarios = $db->query(
+            'SELECT id, nombre, apellido, edad, sexo
+             FROM usuarios
+             ORDER BY id'
+        )->fetchAll();
         responder(200, ['status' => 'ok', 'data' => $usuarios]);
     }
 
-    // POST /usuarios -> crea un usuario.
-    // Body JSON: {"nombre": "...", "apellido": "...", "edad": 25, "sexo": "M"}
+    // POST /usuarios -> crea un usuario y devuelve el registro creado.
+    // Body JSON: {"nombre": "...", "apellido": "...", "edad": 25, "sexo": "M"}.
     if ($method === 'POST') {
         $body = json_decode(file_get_contents('php://input'), true) ?? [];
         $nombre = trim((string) ($body['nombre'] ?? ''));
