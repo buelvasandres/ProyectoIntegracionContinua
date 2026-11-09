@@ -1,0 +1,7 @@
+# Archivos que NO se envían a Docker al construir la imagen.
+.git
+.gitkeep
+.DS_Store
+.env
+Dockerfile
+.dockerignore
