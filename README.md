@@ -18,8 +18,8 @@ Ambos se ejecutan con Docker Compose dentro de una red interna. Solo la API es a
 1. Clonar el repositorio:
 
    ```bash
-   git clone <url-del-repositorio>
-   cd <nombre-del-repositorio>
+   git clone https://github.com/buelvasandres/ProyectoIntegracionContinua.git
+   cd ProyectoIntegracionContinua
    ```
 
 2. Crear el archivo de variables de entorno a partir del ejemplo:
@@ -65,9 +65,10 @@ base de datos devuelven HTTP 503.
 
 ## Integrantes
 
-| Nombre       | Rol                          |
-| ------------ | ---------------------------- |
-| Integrante 1 | Gestión del repositorio      |
-| Integrante 2 | Contenedor de la API         |
-| Integrante 3 | Contenedor de base de datos  |
-| Integrante 4 | Orquestación y pruebas       |
+| Nombre          | Rol                          |
+| ------------    | ---------------------------- |
+| Andres Buelvas  | Gestión del repositorio      |
+| Juan David      | Contenedor de la API         |
+| Henry Gomez     | Contenedor de base de datos  |
+| Victor Mateuz   | Orquestación y pruebas       |
+| Juan Castro     | Orquestación y pruebas       |
