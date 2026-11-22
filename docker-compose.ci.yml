@@ -1,0 +1,7 @@
+services:
+  db:
+    image: mi-postgres:ci
+    container_name: ci-postgres-db
+    ports: !reset []
+  api:
+    ports: !reset []
